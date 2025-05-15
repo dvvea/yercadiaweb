@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yercadia</title>
+  <link rel="icon" href="assets/images/yercadialogo.png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  background: url("assets/images/background.jpg") no-repeat center center/cover;
+  color: white;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(20, 20, 20, 0.8);
+  z-index: 1;
+  /* No fade-in here */
+}
+
+.sidebar {
+  width: 80px;
+  background: rgba(209, 209, 209, 0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  transition: background-color 0.3s ease;
+
+  /* Fade in animation */
+  opacity: 0;
+  animation: fadeInQuick 0.5s ease forwards;
+  animation-delay: 1.1s;
+}
+
+.sidebar.active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tab {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+  margin: 20px 0;
+  transition: transform 0.2s ease;
+}
+
+.tab:hover {
+  transform: scale(1.6);
+}
+
+.tab i {
+  pointer-events: none;
+}
+
+.wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 80px;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+
+  /* Fade in animation */
+  opacity: 0;
+  animation: fadeInQuick 1.5s ease forwards;
+}
+
+.welcome-text {
+  font-size: 1.2rem;
+  font-weight: 300;
+  margin-bottom: 8px;
+  margin-top: -40px;
+  color: #ffffffcc;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.wrapper h1 {
+  font-size: 3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.wrapper p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.donate-btn {
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid #4688ebb4;
+  cursor: pointer;
+  font-size: 18px;
+  color: #ffffffef;
+  transition: 0.3s;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.donate-btn:hover {
+  background: #4688eb2a;
+  color: white;
+}
+
+.footer {
+  position: absolute;
+  bottom: 10px;
+  left: 80px;
+  width: calc(100% - 80px);
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 300;
+  z-index: 3;
+
+  /* Fade in animation */
+  opacity: 0;
+  animation: fadeInQuick 0.5s ease forwards;
+}
+
+.panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.95);
+  padding: 40px;
+  text-align: center;
+  transform: translateX(-100%);
+  transition: transform 0.5s ease-in-out;
+  z-index: 4;
+  overflow-y: auto;
+}
+
+.panel.active {
+  transform: translateX(0);
+}
+
+.join-fall {
+  position: absolute;
+  top: -40px;
+  font-size: 14px;
+  color: #fff;
+  opacity: 0.9;
+  animation: fallSpin 3.5s ease-out forwards;
+  pointer-events: none;
+  z-index: 100;
+}
+
+@keyframes fallSpin {
+  0% {
+    transform: translateY(-40px) rotate(0deg);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.news-notification {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 12px 20px;
+  margin: 20px auto 0;
+  border-radius: 10px;
+  width: fit-content;
+  max-width: 90%;
+  color: #ffffffcc;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  animation: slideInDown 0.6s ease-out;
+}
+
+@keyframes slideInDown {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Fade in keyframe */
+@keyframes fadeInQuick {
+  to {
+    opacity: 1;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <button class="tab" data-tab="home"><i class="fas fa-home"></i></button>
+    <button class="tab" data-tab="news"><i class="fas fa-newspaper"></i></button>
+    <button class="tab" data-tab="info"><i class="fas fa-info-circle"></i></button>
+    <button class="tab" data-tab="rules"><i class="fas fa-scroll"></i></button>
+    <button class="tab" data-tab="donate"><i class="fas fa-donate"></i></button>
+  </aside>
+
+  <main class="wrapper">
+    <p class="welcome-text">Welcome to</p>
+    <h1>Yercadia Anarchy</h1>
+    <p>Yercadia is a vanilla Minecraft server running 1.21.4. Established in July 2024, there are no resets; preserving everything.</p>
+    <p>You can join right now using our IP: <strong>yercadia.xyz</strong></p>
+    <a href="https://discord.gg/Qavh5F552E" target="_blank" class="donate-btn" id="discord-btn">Discord</a>
+  </main>
+
+  <footer class="footer">
+    © 2024–2025 Yercadia.xyz
+  </footer>
+
+  <section id="news" class="panel">
+    <i class="fas fa-newspaper" style="font-size: 48px; color: white; margin-bottom: 10px;"></i>
+    <h2>Latest News</h2>
+    <p>Stay updated with the latest events and updates!</p>
+
+    <div class="news-notification">
+      <strong>📢 Announcement:</strong> New server update released, Server is live!
+    </div>
+  </section>
+
+  <section id="info" class="panel">
+    <i class="fas fa-info-circle" style="font-size: 48px; color: white; margin-bottom: 10px;"></i>
+    <h2>Server Info</h2>
+    <div style="margin-top: 20px; text-align: left; display: inline-block; font-size: 1.1rem;">
+      <strong>Information</strong><br />
+      Yercadia's Age: 0 Years 10 Months<br />
+      World map file size: 34.88GB<br />
+      Total players joined: 192<br /><br />
+
+      <strong>Links</strong><br />
+      <a href="https://www.reddit.com/r/Yercadia" target="_blank" style="color: #4688eb;">Subreddit</a><br />
+      <a href="https://discord.gg/Qavh5F552E" target="_blank" style="color: #4688eb;">Discord</a><br /><br />
+
+      <span style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.5);">
+        (Stats updated May 15th 2025)
+      </span>
+    </div>
+  </section>
+
+  <section id="rules" class="panel">
+    <i class="fas fa-scroll" style="font-size: 48px; color: white; margin-bottom: 10px;"></i>
+    <h2>Contact</h2>
+    <p>Contact someone behind Yercadia: hello@yercadia.xyz.</p> 
+  </section>
+
+  <section id="donate" class="panel">
+    <i class="fas fa-donate" style="font-size: 48px; color: white; margin-bottom: 10px;"></i>
+    <h2>Support Us</h2>
+    <p>Yercadia costs $480 every three months to keep the server running smoothly.</p>
+    <p>Your donation helps cover these expenses and ensures the community stays online and thriving.</p>
+  
+    <h2>MOTD</h2>
+    <p>Get your Message of the Day featured on the server list!</p>
+    <p>Share your advertisement or shoutouts for everyone to see when they join.</p>  
+    <a href="https://donate.stripe.com/fZu5kE3Tmg9h6scgJweUU05" target="_blank" class="donate-btn">Donate</a>
+  </section>
+  
+
+  <script>
+const sidebar = document.getElementById("sidebar");
+const panels = document.querySelectorAll(".panel");
+const tabs = document.querySelectorAll(".tab");
+
+tabs.forEach((button) => {
+  button.addEventListener("click", () => {
+    const targetPanel = document.getElementById(button.dataset.tab);
+
+    let panelActive = false;
+
+    panels.forEach((panel) => {
+      if (panel === targetPanel) {
+        panel.classList.add("active");
+        panelActive = true;
+      } else {
+        panel.classList.remove("active");
+      }
+    });
+
+    if (panelActive && button.dataset.tab !== "home") {
+      sidebar.classList.add("active");
+    } else {
+      sidebar.classList.remove("active");
+    }
+  });
+});
+
+const discordBtn = document.getElementById("discord-btn");
+
+discordBtn.addEventListener("mouseenter", () => {
+  const joinText = document.createElement("div");
+  joinText.classList.add("join-fall");
+  joinText.textContent = "join!";
+  const randomLeft = Math.random() * 90 + 5;
+  joinText.style.left = `${randomLeft}%`;
+  document.body.appendChild(joinText);
+  setTimeout(() => joinText.remove(), 4000);
+});
+
+    // Auto-hide news notification after 6s
+    window.addEventListener("DOMContentLoaded", () => {
+      const notif = document.querySelector(".news-notification");
+      if (notif) {
+        setTimeout(() => {
+          notif.style.transition = "opacity 0.5s ease";
+          notif.style.opacity = "0";
+          setTimeout(() => notif.remove(), 500);
+        }, 60000);
+      }
+    });
+  </script>
+</body>
+</html>
