@@ -26,7 +26,6 @@ body {
   bottom: 0;
   background: rgba(20, 20, 20, 0.8);
   z-index: 1;
-  /* No fade-in here */
 }
 
 .sidebar {
@@ -42,8 +41,6 @@ body {
   top: 0;
   z-index: 5;
   transition: background-color 0.3s ease;
-
-  /* Fade in animation */
   opacity: 0;
   animation: fadeInQuick 0.5s ease forwards;
   animation-delay: 1.1s;
@@ -81,8 +78,6 @@ body {
   position: relative;
   z-index: 2;
   text-align: center;
-
-  /* Fade in animation */
   opacity: 0;
   animation: fadeInQuick 1.5s ease forwards;
 }
@@ -137,8 +132,6 @@ body {
   color: rgba(255, 255, 255, 0.5);
   font-weight: 300;
   z-index: 3;
-
-  /* Fade in animation */
   opacity: 0;
   animation: fadeInQuick 0.5s ease forwards;
 }
@@ -212,7 +205,6 @@ body {
   }
 }
 
-/* Fade in keyframe */
 @keyframes fadeInQuick {
   to {
     opacity: 1;
@@ -247,7 +239,6 @@ body {
     <i class="fas fa-newspaper" style="font-size: 48px; color: white; margin-bottom: 10px;"></i>
     <h2>Latest News</h2>
     <p>Stay updated with the latest events and updates!</p>
-
     <div class="news-notification">
       <strong>📢 Announcement:</strong> New server update released, Server is live!
     </div>
@@ -261,14 +252,10 @@ body {
       Yercadia's Age: 0 Years 10 Months<br />
       World map file size: 34.88GB<br />
       Total players joined: 192<br /><br />
-
       <strong>Links</strong><br />
       <a href="https://www.reddit.com/r/Yercadia" target="_blank" style="color: #4688eb;">Subreddit</a><br />
       <a href="https://discord.gg/Qavh5F552E" target="_blank" style="color: #4688eb;">Discord</a><br /><br />
-
-      <span style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.5);">
-        (Stats updated May 15th 2025)
-      </span>
+      <span style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.5);">(Stats updated May 15th 2025)</span>
     </div>
   </section>
 
@@ -283,38 +270,33 @@ body {
     <h2>Support Us</h2>
     <p>Yercadia costs $480 every three months to keep the server running smoothly.</p>
     <p>Your donation helps cover these expenses and ensures the community stays online and thriving.</p>
-  
     <h2>MOTD</h2>
     <p>Get your Message of the Day featured on the server list!</p>
     <p>Share your advertisement or shoutouts for everyone to see when they join.</p>  
     <a href="https://donate.stripe.com/fZu5kE3Tmg9h6scgJweUU05" target="_blank" class="donate-btn">Donate</a>
   </section>
-  
 
   <script>
 const sidebar = document.getElementById("sidebar");
 const panels = document.querySelectorAll(".panel");
 const tabs = document.querySelectorAll(".tab");
 
+let currentActivePanel = null;
+
 tabs.forEach((button) => {
   button.addEventListener("click", () => {
     const targetPanel = document.getElementById(button.dataset.tab);
+    const isActive = currentActivePanel === targetPanel;
 
-    let panelActive = false;
+    panels.forEach((panel) => panel.classList.remove("active"));
 
-    panels.forEach((panel) => {
-      if (panel === targetPanel) {
-        panel.classList.add("active");
-        panelActive = true;
-      } else {
-        panel.classList.remove("active");
-      }
-    });
-
-    if (panelActive && button.dataset.tab !== "home") {
+    if (!isActive && button.dataset.tab !== "home") {
+      targetPanel.classList.add("active");
       sidebar.classList.add("active");
+      currentActivePanel = targetPanel;
     } else {
       sidebar.classList.remove("active");
+      currentActivePanel = null;
     }
   });
 });
@@ -331,17 +313,16 @@ discordBtn.addEventListener("mouseenter", () => {
   setTimeout(() => joinText.remove(), 4000);
 });
 
-    // Auto-hide news notification after 6s
-    window.addEventListener("DOMContentLoaded", () => {
-      const notif = document.querySelector(".news-notification");
-      if (notif) {
-        setTimeout(() => {
-          notif.style.transition = "opacity 0.5s ease";
-          notif.style.opacity = "0";
-          setTimeout(() => notif.remove(), 500);
-        }, 60000);
-      }
-    });
+window.addEventListener("DOMContentLoaded", () => {
+  const notif = document.querySelector(".news-notification");
+  if (notif) {
+    setTimeout(() => {
+      notif.style.transition = "opacity 0.5s ease";
+      notif.style.opacity = "0";
+      setTimeout(() => notif.remove(), 500);
+    }, 60000);
+  }
+});
   </script>
 </body>
 </html>
